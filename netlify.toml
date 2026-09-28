@@ -6,7 +6,7 @@
 # öffentlichen Adresse gezeigt (/fotos/<schluessel>) statt der Function-URL.
 [[redirects]]
   from = "/fotos/*"
-  to = "/.netlify/functions/photo?key=:splat"
+  to = "/.netlify/functions/photo/:splat"
   status = 200
 
 [[headers]]

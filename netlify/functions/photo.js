@@ -8,7 +8,11 @@ const CONTENT_TYPES = { jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp' 
 
 exports.handler = async function (event) {
   connectBlobs(event);
-  const key = (event.queryStringParameters || {}).key || '';
+  // Die Umleitung in netlify.toml hängt den Foto-Namen als letztes Stück an
+  // den Pfad an (z. B. /fotos/foto-abc123.jpg) – das funktioniert zuverlässiger
+  // als ein Query-Parameter, deshalb wird der Schlüssel hier aus dem Pfad
+  // gelesen statt aus event.queryStringParameters.
+  const key = decodeURIComponent(event.path.split('/').pop() || '');
   if (!KEY_RE.test(key)) return fail(400, 'Ungültiger Bildname.');
 
   const store = photosStore();
