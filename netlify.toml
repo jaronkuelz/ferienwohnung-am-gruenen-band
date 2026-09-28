@@ -1,0 +1,15 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Fotos werden aus Netlify Blobs ausgeliefert, aber unter einer schönen,
+# öffentlichen Adresse gezeigt (/fotos/<schluessel>) statt der Function-URL.
+[[redirects]]
+  from = "/fotos/*"
+  to = "/.netlify/functions/photo?key=:splat"
+  status = 200
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

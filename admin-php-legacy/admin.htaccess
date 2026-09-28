@@ -1,0 +1,17 @@
+Options -Indexes
+DirectoryIndex index.php
+
+# Vorlage und interne Dateien dürfen nicht direkt aufgerufen werden
+<FilesMatch "^(template\.html|lib\.php|fields\.php)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

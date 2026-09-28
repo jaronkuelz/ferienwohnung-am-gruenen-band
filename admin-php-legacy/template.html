@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-edit="seo.title">Ferienwohnung am Grünen Band – Ruhe, Natur, Wandern &amp; Radfahren</title>
+<meta name="description" content="Private Ferienwohnung am Grünen Band – ruhige Naturlage, ideal zum Wandern und Radfahren. Buchbar über Airbnb, Booking.com und mehr." data-meta="seo.description">
+
+<style>
+
+  /* ========================================================================
+     GRUNDEINSTELLUNGEN
+     Diese Datei ist bewusst als EINE einzelne HTML-Datei mit internem CSS
+     gebaut. Kein Build-Prozess, keine externen JS-Bibliotheken.
+     Farb- und Inhalts-Anpassungen: siehe Kommentare "ANPASSEN" im Text.
+     ======================================================================== */
+
+  /* ========================================================================
+     SCHRIFTEN – lokal eingebunden (DSGVO)
+     Die Schriften liegen als .woff2 (Latin-Subset) im Ordner "fonts/" neben
+     dieser HTML-Datei. Es wird KEINE Verbindung mehr zu fonts.googleapis.com
+     oder fonts.gstatic.com aufgebaut – dadurch wird keine Besucher-IP an
+     Google übertragen und es braucht keine Cookie-Einwilligung dafür.
+     font-weight ist als Bereich (400 700) angegeben, da es sich um
+     Variable-Fonts handelt, die mehrere Schnitte in einer Datei enthalten.
+     Falls die fonts/-Dateien fehlen, greifen automatisch die
+     Fallback-Schriften (system-ui/sans-serif) aus den Font-Stacks weiter
+     unten – die Seite bleibt also auch ohne Schriftdateien lesbar.
+     ======================================================================== */
+  @font-face {
+    font-family: 'Bricolage Grotesque';
+    src: url('fonts/bricolage-grotesque-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('fonts/inter-latin.woff2') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* ---- Farbpalette: Waldgrün + Papierweiß + Lehm-Akzent (sparsam!) ---- */
+  :root {
+    --wald-dunkel: #142b20;
+    --wald: #1e3d2c;
+    --wald-hell: #375f45;
+    --wald-blass: #e7efe7;
+    --papier: #faf7ef;
+    --papier-dunkel: #f1eadb;
+    --lehm: #b3652f;
+    --lehm-hell: #c97d43;
+    --text: #1b241c;
+    --text-mild: #4d5b4f;
+    --linie: rgba(20, 43, 32, 0.14);
+    --schatten: rgba(20, 43, 32, 0.18);
+  }
+
+  * , *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 84px; /* damit Sprungmarken nicht unter der Sticky-Nav verschwinden */
+  }
+
+  /* Barrierefreiheit: Bewegung reduzieren, wenn vom Nutzer gewünscht */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * , *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--papier);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .schrift-titel {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--wald-dunkel);
+  }
+
+  a { color: inherit; }
+  img { max-width: 100%; display: block; }
+  ul { list-style: none; }
+  section { position: relative; }
+
+  .container {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Sichtbarer Tastatur-Fokus für Barrierefreiheit (überall) */
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  input:focus-visible {
+    outline: 3px solid var(--lehm);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* Skip-Link: für Tastatur-/Screenreader-Nutzer direkt zum Inhalt springen */
+  .skip-link {
+    position: absolute;
+    left: -999px;
+    top: auto;
+    background: var(--wald-dunkel);
+    color: var(--papier);
+    padding: 0.8rem 1.4rem;
+    z-index: 999;
+    border-radius: 0 0 6px 0;
+  }
+  .skip-link:focus {
+    left: 0;
+    top: 0;
+  }
+
+  /* ---- Buttons ---- */
+  .btn {
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.7rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+
+  .btn-lehm {
+    background: var(--lehm);
+    color: #fff;
+    box-shadow: 0 8px 20px -8px rgba(179, 101, 47, 0.6);
+  }
+  .btn-lehm:hover { background: var(--lehm-hell); }
+
+  .btn-hell {
+    background: rgba(250, 247, 239, 0.95);
+    color: var(--wald-dunkel);
+  }
+  .btn-hell:hover { background: #fff; }
+
+  .btn-umriss {
+    background: transparent;
+    border-color: var(--wald);
+    color: var(--wald-dunkel);
+  }
+  .btn-umriss:hover { background: var(--wald); color: #fff; }
+
+  /* ========================================================================
+     "GRÜNES BAND"-MOTIV
+     Wiederkehrendes gestalterisches Element: eine dünne, geschwungene Linie,
+     die an einen Wanderpfad / den ehemaligen Grenzstreifen erinnert.
+     Wird als Trenner zwischen Abschnitten und als Deko-Element genutzt.
+     ======================================================================== */
+  .band-trenner {
+    width: 100%;
+    height: 34px;
+    display: block;
+  }
+  .band-trenner path { fill: none; stroke: var(--wald-hell); stroke-width: 2.5; opacity: 0.45; }
+  .band-trenner circle { fill: var(--lehm); }
+
+  /* ========================================================================
+     NAVIGATION (sticky)
+     ======================================================================== */
+  header.hauptnav {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(250, 247, 239, 0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--linie);
+  }
+  .nav-innen {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--wald-dunkel);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-logo svg { flex-shrink: 0; }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.9rem;
+    flex-wrap: wrap;
+  }
+  .nav-links a:not(.btn) {
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-mild);
+    position: relative;
+    padding-bottom: 4px;
+  }
+  .nav-links a:not(.btn)::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%; bottom: 0;
+    height: 2px;
+    background: var(--lehm);
+    transition: right 0.25s ease;
+  }
+  .nav-links a:not(.btn):hover::after { right: 0; }
+
+  .nav-rechts { display: flex; align-items: center; gap: 1.2rem; }
+
+  /* Mobiles Menü ohne JavaScript: Checkbox-Technik */
+  .nav-toggle { display: none; }
+  .nav-burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 0.4rem;
+  }
+  .nav-burger span { width: 24px; height: 2px; background: var(--wald-dunkel); display: block; }
+
+  @media (max-width: 860px) {
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0; right: 0;
+      background: var(--papier);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+      padding: 1rem 1.5rem 1.5rem;
+      border-bottom: 1px solid var(--linie);
+      box-shadow: 0 12px 24px -12px var(--schatten);
+    }
+    .nav-links a:not(.btn) { width: 100%; padding: 0.7rem 0; }
+    .nav-toggle:checked ~ .nav-links { display: flex; }
+    .nav-burger { display: flex; }
+    .nav-links .btn { margin-top: 0.6rem; }
+  }
+
+  /* ========================================================================
+     HERO
+     ======================================================================== */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: flex-end;
+    color: var(--papier);
+    overflow: hidden;
+  }
+
+  /* FOTOS: Platzhalter-Flächen. Wird im Adminpanel ein Foto hochgeladen,
+     bekommt die Fläche die Klasse "hat-foto" und ein <img class="foto-bild">. */
+  .foto-bild {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .hero-foto-platzhalter.hat-foto { background: none; }
+  .hero-foto-platzhalter.hat-foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(20,43,32,0.35) 0%, rgba(20,43,32,0.55) 55%, rgba(20,43,32,0.9) 100%);
+  }
+  .hat-foto .hero-foto-hinweis,
+  .hat-foto .lage-foto-hinweis { display: none; }
+  .galerie-bild.hat-foto,
+  .lage-foto-platzhalter.hat-foto { background: none; }
+
+  .hero-foto-platzhalter {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(20,43,32,0.35) 0%, rgba(20,43,32,0.55) 55%, rgba(20,43,32,0.9) 100%),
+      repeating-linear-gradient(135deg, #33553f 0px, #33553f 2px, #2a4837 2px, #2a4837 60px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-foto-hinweis {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(250,247,239,0.55);
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    text-align: center;
+  }
+
+  .hero-inhalt {
+    position: relative;
+    z-index: 2;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+    width: 100%;
+  }
+  .hero-inhalt h1 {
+    color: #fff;
+    font-size: clamp(2.1rem, 5vw, 3.4rem);
+    max-width: 16ch;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.25);
+  }
+  .hero-inhalt p.hero-text {
+    max-width: 46ch;
+    font-size: 1.08rem;
+    color: rgba(250,247,239,0.92);
+    margin-bottom: 2rem;
+  }
+  .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.2rem; }
+
+  .hero-fakten {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1.6rem;
+    font-size: 0.92rem;
+    color: rgba(250,247,239,0.9);
+    border-top: 1px solid rgba(250,247,239,0.25);
+    padding-top: 1.1rem;
+  }
+  .hero-fakten span { white-space: nowrap; }
+
+  /* ========================================================================
+     ÜBERSCHRIFTEN-BLOCK (wiederverwendet für mehrere Abschnitte)
+     ======================================================================== */
+  .abschnitt { padding: 5.5rem 0; }
+  .abschnitt-kopf { margin-bottom: 2.8rem; max-width: 640px; }
+  .abschnitt-kopf .kicker {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--lehm);
+    margin-bottom: 0.6rem;
+  }
+  .abschnitt-kopf h2 { font-size: clamp(1.7rem, 3.2vw, 2.3rem); }
+  .abschnitt-kopf p { color: var(--text-mild); margin-top: 0.8rem; font-size: 1.02rem; }
+
+  /* ========================================================================
+     DIE WOHNUNG – FOTOGALERIE (5 Bilder im Raster)
+     ======================================================================== */
+  .galerie {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 220px);
+    gap: 0.9rem;
+  }
+  .galerie-bild:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+  .galerie-bild:nth-child(2) { grid-column: 3 / 5; grid-row: 1 / 2; }
+  .galerie-bild:nth-child(3) { grid-column: 3 / 4; grid-row: 2 / 3; }
+  .galerie-bild:nth-child(4) { grid-column: 4 / 5; grid-row: 2 / 3; }
+  .galerie-bild:nth-child(5) { grid-column: 5 / 6; grid-row: 1 / 3; }
+
+  @media (max-width: 760px) {
+    .galerie { grid-template-columns: repeat(2, 1fr); grid-template-rows: none; }
+    .galerie-bild:nth-child(1) { grid-column: span 2; }
+    .galerie-bild { height: 180px !important; grid-row: auto !important; }
+    .galerie-bild:nth-child(4),
+    .galerie-bild:nth-child(5) { height: 300px !important; }
+  }
+
+  /* FOTO-PLATZHALTER-STIL: graue Fläche mit Beschriftung (.galerie-etikett).
+     Mit Foto liegt das <img> darunter, die Beschriftung bleibt sichtbar. */
+  .galerie-bild {
+    position: relative;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(135deg, #dfd9c8 0px, #dfd9c8 2px, #eae4d4 2px, #eae4d4 46px);
+    display: flex;
+    align-items: flex-end;
+    color: var(--text-mild);
+  }
+  .galerie-etikett {
+    position: relative;
+    z-index: 1;
+    background: rgba(250,247,239,0.88);
+    padding: 0.5rem 0.9rem;
+    margin: 0.7rem;
+    border-radius: 999px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* ========================================================================
+     AUSSTATTUNG – Icon-Raster
+     ======================================================================== */
+  .ausstattung-raster {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.3rem;
+  }
+  @media (max-width: 760px) { .ausstattung-raster { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .ausstattung-raster { grid-template-columns: 1fr; } }
+
+  .ausstattung-item {
+    background: #fff;
+    border: 1px solid var(--linie);
+    border-radius: 12px;
+    padding: 1.5rem 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .ausstattung-item .icon-kreis {
+    flex-shrink: 0;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: var(--wald-blass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--wald);
+  }
+  .ausstattung-item strong { display: block; font-size: 0.98rem; color: var(--wald-dunkel); }
+  .ausstattung-item p { font-size: 0.85rem; color: var(--text-mild); margin-top: 2px; }
+
+  /* ========================================================================
+     BUCHUNGSAUSWAHL – Fenster mit den Buchungsoptionen
+     ======================================================================== */
+  .buchen-dialog {
+    margin: auto;
+    border: none;
+    border-radius: 16px;
+    padding: 1.8rem;
+    width: min(480px, calc(100vw - 2.4rem));
+    max-height: min(600px, calc(100vh - 2.4rem));
+    background: var(--papier);
+    box-shadow: 0 20px 60px -12px var(--schatten);
+  }
+  .buchen-dialog::backdrop {
+    background: rgba(20, 43, 32, 0.55);
+  }
+  .buchen-dialog-kopf {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+  .buchen-dialog-kopf h3 { font-size: 1.3rem; }
+  .buchen-schliessen {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: var(--wald-blass);
+    color: var(--wald-dunkel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .buchen-schliessen:hover { background: var(--linie); }
+  .buchen-optionen {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .buchen-option {
+    display: block;
+    border: 1px solid var(--linie);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .buchen-option:hover { border-color: var(--lehm); background: var(--papier-dunkel); }
+  .buchen-option strong { display: block; font-size: 1rem; color: var(--wald-dunkel); }
+  .buchen-option span { font-size: 0.85rem; color: var(--text-mild); }
+  button.buchen-option { width: 100%; text-align: left; background: #fff; font: inherit; }
+  .buchen-dialog p { color: var(--text-mild); line-height: 1.6; }
+  .buchen-dialog p a { color: var(--lehm); font-weight: 600; }
+
+  /* ========================================================================
+     FOTO-VERGRÖSSERUNG – Klick auf ein Foto (außer Titelbild) öffnet es groß
+     ======================================================================== */
+  .galerie-bild .foto-bild {
+    cursor: zoom-in;
+  }
+  .bild-dialog {
+    margin: auto;
+    border: none;
+    padding: 0;
+    max-width: 92vw;
+    max-height: 92vh;
+    background: transparent;
+  }
+  .bild-dialog::backdrop { background: rgba(20,43,32,0.85); }
+  .bild-dialog img {
+    display: block;
+    max-width: 92vw;
+    max-height: 92vh;
+    border-radius: 10px;
+  }
+  .bild-schliessen {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(250,247,239,0.92);
+    color: var(--wald-dunkel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  .bild-schliessen:hover { background: #fff; }
+
+  /* ========================================================================
+     LAGE & UMGEBUNG
+     ======================================================================== */
+  .lage {
+    background: var(--wald-dunkel);
+    color: var(--papier);
+  }
+  .lage-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  @media (max-width: 860px) { .lage-grid { grid-template-columns: 1fr; } }
+
+  .lage .abschnitt-kopf .kicker { color: var(--lehm-hell); }
+  .lage .abschnitt-kopf h2 { color: #fff; }
+  .lage-liste { display: grid; gap: 0.9rem; margin-top: 1.8rem; }
+  .lage-liste li { display: flex; gap: 0.8rem; align-items: flex-start; color: rgba(250,247,239,0.9); font-size: 0.98rem; }
+  .lage-liste li svg { flex-shrink: 0; margin-top: 3px; color: var(--lehm-hell); }
+
+  .lage-foto-hinweis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .lage-foto-platzhalter {
+    position: relative;
+    overflow: hidden;
+    height: 380px;
+    border-radius: 14px;
+    background: repeating-linear-gradient(135deg, #24473a 0px, #24473a 2px, #1c3a2f 2px, #1c3a2f 46px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(250,247,239,0.55);
+    font-size: 0.85rem;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* ========================================================================
+     PREISE & KONDITIONEN
+     ======================================================================== */
+  .preise-karte {
+    background: #fff;
+    border: 1px solid var(--linie);
+    border-radius: 16px;
+    padding: 2.6rem;
+    max-width: 620px;
+    box-shadow: 0 30px 60px -40px var(--schatten);
+  }
+  .preise-ab { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.4rem; }
+  .preise-ab .betrag { font-family: 'Bricolage Grotesque', sans-serif; font-size: 2.6rem; font-weight: 700; color: var(--wald-dunkel); }
+  .preise-ab .einheit { color: var(--text-mild); font-size: 1rem; }
+  .preise-hinweis { color: var(--text-mild); font-size: 0.88rem; margin-bottom: 1.8rem; }
+
+  .preise-liste { display: grid; gap: 0; border-top: 1px solid var(--linie); margin-bottom: 1.8rem; }
+  .preise-liste li {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--linie);
+    font-size: 0.96rem;
+  }
+  .preise-liste li span:first-child { color: var(--text-mild); }
+  .preise-liste li span:last-child { font-weight: 600; color: var(--wald-dunkel); text-align: right; }
+
+  .preise-fussnote { font-size: 0.82rem; color: var(--text-mild); margin-bottom: 1.6rem; }
+
+  /* ========================================================================
+     VERFÜGBARKEIT (statischer Beispiel-Kalender)
+     ======================================================================== */
+  .verfuegbarkeit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  @media (max-width: 860px) { .verfuegbarkeit-grid { grid-template-columns: 1fr; } }
+
+  .kalender-karte {
+    background: #fff;
+    border: 1px solid var(--linie);
+    border-radius: 16px;
+    padding: 1.8rem;
+  }
+  .kalender-titel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
+  .kalender-titel strong { font-family: 'Bricolage Grotesque', sans-serif; color: var(--wald-dunkel); }
+  .kalender-tage-kopf, .kalender-tage {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .kalender-tage-kopf span {
+    text-align: center;
+    font-size: 0.72rem;
+    color: var(--text-mild);
+    font-weight: 600;
+    padding-bottom: 0.4rem;
+  }
+  .kalender-tage span {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    background: var(--wald-blass);
+    color: var(--wald-dunkel);
+  }
+  .kalender-tage span.belegt {
+    background: var(--wald);
+    color: rgba(250,247,239,0.85);
+    text-decoration: line-through;
+    text-decoration-color: rgba(250,247,239,0.5);
+  }
+  .kalender-tage span.leer { background: transparent; }
+  .kalender-legende { display: flex; gap: 1.4rem; margin-top: 1.2rem; font-size: 0.82rem; color: var(--text-mild); }
+  .kalender-legende span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .kalender-punkt { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  .verfuegbarkeit-hinweis {
+    background: var(--papier-dunkel);
+    border-radius: 14px;
+    padding: 1.6rem 1.8rem;
+    font-size: 0.92rem;
+    color: var(--text-mild);
+    border-left: 4px solid var(--lehm);
+    margin-bottom: 1.6rem;
+  }
+
+  /* ========================================================================
+     ABSCHLUSS-CTA
+     ======================================================================== */
+  .cta-abschluss {
+    background: linear-gradient(160deg, var(--wald) 0%, var(--wald-dunkel) 100%);
+    color: var(--papier);
+    padding: 5.5rem 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-abschluss h2 { color: #fff; font-size: clamp(1.8rem, 4vw, 2.6rem); max-width: 20ch; margin: 0 auto 1rem; }
+  .cta-abschluss p { color: rgba(250,247,239,0.85); max-width: 46ch; margin: 0 auto 2.2rem; font-size: 1.05rem; }
+
+  /* ========================================================================
+     FOOTER
+     ======================================================================== */
+  footer.fuss {
+    background: var(--wald-dunkel);
+    color: rgba(250,247,239,0.85);
+    padding: 4rem 0 2rem;
+  }
+  .fuss-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(250,247,239,0.15);
+  }
+  @media (max-width: 760px) { .fuss-grid { grid-template-columns: 1fr; } }
+
+  .fuss-logo {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 700; font-size: 1.15rem; color: #fff; margin-bottom: 0.9rem;
+  }
+  .fuss-kontakt p { font-size: 0.92rem; margin-bottom: 0.4rem; color: rgba(250,247,239,0.75); }
+  .fuss-kontakt a { text-decoration: underline; text-decoration-color: rgba(250,247,239,0.35); }
+
+  /* Rechtliches: gut sichtbare Links im Footer, max. 2 Klicks von jeder Seite */
+  .fuss-rechtliches p { font-size: 0.92rem; margin-bottom: 0.7rem; color: rgba(250,247,239,0.75); }
+  .fuss-rechtliches ul { display: grid; gap: 0.5rem; }
+  .fuss-rechtliches a {
+    font-size: 0.92rem;
+    color: rgba(250,247,239,0.9);
+    text-decoration: underline;
+    text-decoration-color: rgba(250,247,239,0.35);
+  }
+  .fuss-rechtliches a:hover { color: #fff; }
+
+  /* Aufklappbare Rechtsvorlagen (Impressum, Datenschutz) */
+  details.rechtsblock {
+    border-bottom: 1px solid rgba(250,247,239,0.15);
+    padding: 1rem 0;
+  }
+  details.rechtsblock summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.98rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  details.rechtsblock summary::-webkit-details-marker { display: none; }
+  details.rechtsblock summary::after {
+    content: "+";
+    font-size: 1.2rem;
+    color: var(--lehm-hell);
+    transition: transform 0.2s ease;
+  }
+  details.rechtsblock[open] summary::after { transform: rotate(45deg); }
+
+  /* Kurzes Aufleuchten, wenn per Sprungmarke (#impressum etc.) direkt
+     angesprungen wird – zeigt dem Auge, welcher Bereich gemeint ist.
+     Wird bei "Bewegung reduzieren" komplett deaktiviert. */
+  details.rechtsblock:target {
+    animation: rechts-aufleuchten 1.6s ease;
+    border-radius: 8px;
+  }
+  @keyframes rechts-aufleuchten {
+    0% { background: rgba(201, 125, 67, 0.25); }
+    100% { background: transparent; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    details.rechtsblock:target { animation: none; }
+  }
+
+  details.rechtsblock .rechts-inhalt {
+    margin-top: 0.9rem;
+    font-size: 0.86rem;
+    line-height: 1.7;
+    color: rgba(250,247,239,0.72);
+    max-width: 70ch;
+  }
+  details.rechtsblock .rechts-inhalt p { margin-bottom: 0.7rem; }
+  details.rechtsblock .rechts-inhalt strong { color: rgba(250,247,239,0.92); }
+  .platzhalter-markierung { color: var(--lehm-hell); }
+
+  .fuss-unten {
+    padding-top: 1.6rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    color: rgba(250,247,239,0.5);
+  }
+
+</style>
+</head>
+<body>
+
+<!-- Sprungmarke für Tastatur- und Screenreader-Nutzer -->
+<a href="#hauptinhalt" class="skip-link">Zum Inhalt springen</a>
+
+<!-- ========================================================================
+     1) STICKY-NAVIGATION
+     ======================================================================== -->
+<header class="hauptnav">
+  <div class="nav-innen">
+    <a href="#hero" class="nav-logo" aria-label="Startseite">
+      <!-- Logo-Icon: stilisiertes "Band" -->
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+        <path d="M3 20C7 12 11 24 15 16C18 10 21 20 25 8" stroke="#1e3d2c" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="15" cy="16" r="2.2" fill="#b3652f"/>
+      </svg>
+      <span data-edit="brand.name">Am Grünen Band</span>
+    </a>
+
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+
+    <ul class="nav-links">
+      <li><a href="#wohnung" data-edit="nav.wohnung">Die Wohnung</a></li>
+      <li><a href="#ausstattung" data-edit="nav.ausstattung">Ausstattung</a></li>
+      <li><a href="#lage" data-edit="nav.lage">Lage</a></li>
+      <li><a href="#preise" data-edit="nav.preise">Preise</a></li>
+      <li><a href="#verfuegbarkeit" data-edit="nav.verfuegbarkeit">Verfügbarkeit</a></li>
+      <li><a href="#kontakt" data-edit="nav.kontakt">Kontakt</a></li>
+      <li><button type="button" class="btn btn-lehm js-buchen-oeffnen" data-edit="nav.buchen">Buchen</button></li>
+    </ul>
+
+    <label for="nav-toggle" class="nav-burger" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </label>
+  </div>
+</header>
+
+<main id="hauptinhalt">
+
+  <!-- ======================================================================
+       2) HERO
+       ==================================================================== -->
+  <section class="hero" id="hero">
+    <div class="hero-foto-platzhalter" aria-hidden="true" data-img="hero">
+      <div class="hero-foto-hinweis">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <rect x="3" y="6" width="18" height="14" rx="2"/>
+          <circle cx="12" cy="13" r="3.3"/>
+          <path d="M8 6l1.4-2h5.2L16 6"/>
+        </svg>
+        HIER GROSSES TITELFOTO EINSETZEN<br>(Außenansicht mit Landschaft)
+      </div>
+    </div>
+
+    <div class="hero-inhalt">
+      <h1 data-edit="hero.titel">Ferienwohnung am Grünen Band – Zeit für Ruhe und Natur</h1>
+      <p class="hero-text" data-edit="hero.text">Eine zum Niedrigenergiehaus umgebaute alte Scheune im Dreiländereck Niedersachsen/Hessen/Thüringen – in einem kleinen Dorf mit rund 200 Einwohnern in der Gemeinde Gleichen.</p>
+      <div class="hero-buttons">
+        <button type="button" class="btn btn-lehm js-buchen-oeffnen" data-edit="hero.btn_buchen">Buchen</button>
+        <a href="#wohnung" class="btn btn-hell" data-edit="hero.btn_wohnung">Wohnung ansehen</a>
+      </div>
+      <div class="hero-fakten">
+        <span data-edit="hero.fakt1">👥 bis zu 6 Schlafplätze</span>
+        <span data-edit="hero.fakt2">🛏 1 Schlafzimmer</span>
+        <span data-edit="hero.fakt3">📐 ca. 80 m²</span>
+        <span data-edit="hero.fakt4">🐾 Haustiere erlaubt (10 €/Nacht)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Band-Trenner -->
+  <svg class="band-trenner" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,17 C150,32 300,2 450,17 C600,32 750,2 900,17 C1050,32 1150,6 1200,17"/>
+    <circle cx="450" cy="17" r="4"/>
+  </svg>
+
+  <!-- ======================================================================
+       4) DIE WOHNUNG – Fotogalerie
+       ==================================================================== -->
+  <section class="abschnitt" id="wohnung">
+    <div class="container">
+      <div class="abschnitt-kopf">
+        <span class="kicker" data-edit="wohnung.kicker">Die Wohnung</span>
+        <h2 data-edit="wohnung.titel">Hell, gemütlich und mit Blick ins Grüne</h2>
+        <p data-edit="wohnung.text">Ein Rundgang durch die Räume – von Wohnbereich bis Dachbalkon. Fotos folgen, sobald verfügbar.</p>
+      </div>
+
+      <div class="galerie">
+        <div class="galerie-bild" data-img="gal1"><span class="galerie-etikett" data-edit="gal1.caption" data-hide-empty="gal1.caption">Wohnbereich</span></div>
+        <div class="galerie-bild" data-img="gal2"><span class="galerie-etikett" data-edit="gal2.caption" data-hide-empty="gal2.caption">Küche</span></div>
+        <div class="galerie-bild" data-img="gal3"><span class="galerie-etikett" data-edit="gal3.caption" data-hide-empty="gal3.caption">Schlafzimmer</span></div>
+        <div class="galerie-bild" data-img="gal4"><span class="galerie-etikett" data-edit="gal4.caption" data-hide-empty="gal4.caption">Bad</span></div>
+        <div class="galerie-bild" data-img="gal5"><span class="galerie-etikett" data-edit="gal5.caption" data-hide-empty="gal5.caption">Dachbalkon</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       5) AUSSTATTUNG – Icon-Raster (Inline-SVGs, kein Icon-Set nötig)
+       ==================================================================== -->
+  <section class="abschnitt" id="ausstattung" style="background: var(--papier-dunkel);">
+    <div class="container">
+      <div class="abschnitt-kopf">
+        <span class="kicker" data-edit="aus.kicker">Ausstattung</span>
+        <h2 data-edit="aus.titel">Alles, was Sie für einen entspannten Aufenthalt brauchen</h2>
+      </div>
+
+      <div class="ausstattung-raster">
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <path d="M2 8.5a15 15 0 0 1 20 0"/>
+              <path d="M5.5 12.2a10 10 0 0 1 13 0"/>
+              <path d="M9 15.8a5 5 0 0 1 6 0"/>
+              <circle cx="12" cy="19" r="1.1" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus1.titel">WLAN</strong><p data-edit="aus1.text">Kostenfreies Internet</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h14a2 2 0 0 1 2 2v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-3Z"/>
+              <path d="M4 12a2 2 0 1 1 0-4"/>
+              <path d="M9 8V4M12 8V4M15 8V5"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus2.titel">Küche</strong><p data-edit="aus2.text">E-Herd, Mikrowelle, Kühlschrank, Spülmaschine, Kaffeemaschine</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h16a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-1a1 1 0 0 1 1-1Z"/>
+              <path d="M6 12V7.5A2 2 0 0 1 8 5.5c1 0 1.6.5 1.9 1.1"/>
+              <path d="M4 20v1M18 20v1"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus3.titel">Bad</strong><p data-edit="aus3.text">Badewanne und separate Dusche</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 19h18"/>
+              <path d="M6.5 15c1-1 1-2 0-3s-1-2 0-3"/>
+              <path d="M11.5 15c1-1 1-2 0-3s-1-2 0-3"/>
+              <path d="M16.5 15c1-1 1-2 0-3s-1-2 0-3"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus4.titel">Fußbodenheizung</strong><p data-edit="aus4.text">Angenehme Wärme im ganzen Raum</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="12" rx="2"/>
+              <path d="M8 21h8M12 17v4"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus5.titel">TV</strong><p data-edit="aus5.text">Fernseher vorhanden</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M13 7l-4 6h3l-1 4 4-6h-3l1-4Z"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus6.titel">E-Bike-Ladestation</strong><p data-edit="aus6.text">Zum Aufladen direkt am Haus</p></div>
+        </div>
+
+        <div class="ausstattung-item">
+          <div class="icon-kreis">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20M4.5 6.5l15 11M19.5 6.5l-15 11"/>
+              <path d="M12 5 10 3M12 5l2-2M12 19l-2 2M12 19l2 2M6 9 4 8.5M6 9l-.5-2M18 9l2-.5M18 9l.5-2M6 15l-2 .5M6 15l-.5 2M18 15l2 .5M18 15l.5 2"/>
+            </svg>
+          </div>
+          <div><strong data-edit="aus7.titel">Klimaanlage</strong><p data-edit="aus7.text">Für angenehme Kühle an warmen Tagen</p></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       6) LAGE & UMGEBUNG
+       ==================================================================== -->
+  <section class="abschnitt lage" id="lage">
+    <div class="container lage-grid">
+
+      <div class="lage-foto-platzhalter" data-img="lage">
+        <div class="lage-foto-hinweis">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+            <path d="M3 18l5-8 4 5 3-4 6 7"/>
+            <circle cx="7" cy="7" r="2"/>
+          </svg>
+          HIER LANDSCHAFTSFOTO EINSETZEN<br>(Grünes Band / Wanderweg)
+        </div>
+      </div>
+
+      <div>
+        <div class="abschnitt-kopf" style="margin-bottom:0;">
+          <span class="kicker" data-edit="lage.kicker">Lage &amp; Umgebung</span>
+          <h2 data-edit="lage.titel">Am Grünen Band</h2>
+        </div>
+        <ul class="lage-liste">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>
+            <span data-edit="lage.punkt1">Im Tiefen Weg 1, 37130 Gleichen</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>
+            <span data-edit="lage.punkt2">Lage im Dreiländereck Niedersachsen, Hessen und Thüringen</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>
+            <span data-edit="lage.punkt3">Kleines Dorf mit rund 200 Einwohnern, Gemeinde Gleichen</span>
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l4 4 10-10"/></svg>
+            <span data-edit="lage.punkt4">Die Wohnung selbst: eine zum Niedrigenergiehaus umgebaute alte Scheune mit Dachbalkon</span>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       7) PREISE & KONDITIONEN
+       ==================================================================== -->
+  <section class="abschnitt" id="preise">
+    <div class="container">
+      <div class="abschnitt-kopf">
+        <span class="kicker" data-edit="preise.kicker">Preise &amp; Konditionen</span>
+        <h2 data-edit="preise.titel">Kosten</h2>
+        <p data-edit="preise.stand">Preise bitte regelmäßig mit Airbnb abgleichen.</p>
+      </div>
+
+      <div class="preise-karte">
+        <div class="preise-ab">
+          <span class="betrag" data-edit="preise.betrag">50 €</span>
+          <span class="einheit" data-edit="preise.einheit">/ Nacht (2 Personen)</span>
+        </div>
+        <p class="preise-hinweis" data-edit="preise.hinweis">60 € pro Nacht an Wochenenden und Feiertagen. Der Spitzboden ist zusätzlich für 15 € pro Nacht und Person buchbar.</p>
+
+        <ul class="preise-liste">
+          <li><span data-edit="preise.z1.label">Mindestaufenthalt</span><span data-edit="preise.z1.wert">2 Nächte</span></li>
+          <li><span data-edit="preise.z2.label">Endreinigung</span><span data-edit="preise.z2.wert">30 € einmalig</span></li>
+          <li><span data-edit="preise.z3.label">Bettwäsche &amp; Handtücher</span><span data-edit="preise.z3.wert">10 € pro Aufenthalt</span></li>
+          <li><span data-edit="preise.z4.label">Haustiere</span><span data-edit="preise.z4.wert">10 € pro Nacht</span></li>
+          <li><span data-edit="preise.z5.label">Check-in / Check-out</span><span data-edit="preise.z5.wert">[Uhrzeiten]</span></li>
+        </ul>
+
+        <a href="#" class="btn btn-lehm js-airbnb-link" target="_blank" rel="noopener" style="width:100%; justify-content:center;" data-edit="preise.btn">Genauen Preis auf Airbnb ansehen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Band-Trenner -->
+  <svg class="band-trenner" viewBox="0 0 1200 34" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,17 C150,2 300,32 450,17 C600,2 750,32 900,17 C1050,2 1150,28 1200,17"/>
+    <circle cx="900" cy="17" r="4"/>
+  </svg>
+
+  <!-- ======================================================================
+       8) VERFÜGBARKEIT (statischer Beispiel-Kalender)
+       ==================================================================== -->
+  <section class="abschnitt" id="verfuegbarkeit" style="background: var(--papier-dunkel);">
+    <div class="container">
+      <div class="abschnitt-kopf">
+        <span class="kicker" data-edit="verf.kicker">Verfügbarkeit</span>
+        <h2 data-edit="verf.titel">Beispiel-Kalender</h2>
+        <p data-edit="verf.intro">Dieser Kalender dient nur zur Veranschaulichung.</p>
+      </div>
+
+      <div class="verfuegbarkeit-grid">
+
+        <div class="kalender-karte">
+          <div class="kalender-titel">
+            <strong data-edit="verf.kalender_titel">August 2026 (Beispiel)</strong>
+          </div>
+          <div class="kalender-tage-kopf">
+            <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+          </div>
+          <!-- Statisches Beispiel-Raster: 1. August 2026 ist ein Samstag -->
+          <div class="kalender-tage">
+            <span class="leer"></span><span class="leer"></span><span class="leer"></span><span class="leer"></span><span class="leer"></span>
+            <span>1</span><span>2</span>
+            <span>3</span><span>4</span><span>5</span><span class="belegt">6</span><span class="belegt">7</span><span class="belegt">8</span><span>9</span>
+            <span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span>
+            <span class="belegt">17</span><span class="belegt">18</span><span class="belegt">19</span><span class="belegt">20</span><span class="belegt">21</span><span>22</span><span>23</span>
+            <span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+            <span>31</span>
+          </div>
+          <div class="kalender-legende">
+            <span><span class="kalender-punkt" style="background: var(--wald-blass);"></span> <span data-edit="verf.frei">frei</span></span>
+            <span><span class="kalender-punkt" style="background: var(--wald);"></span> <span data-edit="verf.belegt">belegt</span></span>
+          </div>
+        </div>
+
+        <div>
+          <div class="verfuegbarkeit-hinweis" data-edit="verf.hinweis">Dies ist ein statischer Beispiel-Kalender zur Veranschaulichung. Für die tatsächliche Verfügbarkeit gilt ausschließlich der Kalender auf Airbnb. Später kann dieser Bereich automatisch per Airbnb-iCal-Synchronisation aktuell gehalten werden.</div>
+          <a href="#" class="btn btn-umriss js-airbnb-link" target="_blank" rel="noopener" data-edit="verf.btn">Verfügbarkeit auf Airbnb prüfen</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       9) ABSCHLUSS-CTA
+       ==================================================================== -->
+  <section class="cta-abschluss" id="buchen">
+    <div class="container">
+      <h2 data-edit="cta.titel">Bereit für Ruhe, Natur und Zeit zu zweit?</h2>
+      <p data-edit="cta.text">Sichern Sie sich Ihren Aufenthalt in der Ferienwohnung am Grünen Band – wählen Sie einfach Ihren bevorzugten Buchungsweg.</p>
+      <button type="button" class="btn btn-lehm js-buchen-oeffnen" style="font-size:1.05rem; padding:1.1rem 2.2rem;" data-edit="cta.btn">Buchen</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========================================================================
+     BUCHUNGSAUSWAHL – erscheint beim Klick auf "Buchen"
+     ======================================================================== -->
+<dialog class="buchen-dialog" id="buchen-dialog" aria-labelledby="buchen-dialog-titel">
+  <div class="buchen-dialog-kopf">
+    <h3 id="buchen-dialog-titel" data-edit="buchen.titel">Wie möchten Sie buchen?</h3>
+    <button type="button" class="buchen-schliessen" data-buchen-schliessen aria-label="Fenster schließen">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+  <div class="buchen-optionen">
+    <a href="#" class="buchen-option js-airbnb-link" target="_blank" rel="noopener">
+      <strong data-edit="buchen.airbnb_titel">Airbnb</strong>
+      <span data-edit="buchen.airbnb_text">Bewertungen und Sofortbuchung</span>
+    </a>
+    <a href="#" class="buchen-option js-booking-link" target="_blank" rel="noopener">
+      <strong data-edit="buchen.booking_titel">Booking.com</strong>
+      <span data-edit="buchen.booking_text">Buchen wie gewohnt über Booking.com</span>
+    </a>
+    <a href="#" class="buchen-option js-landkreis-link" target="_blank" rel="noopener">
+      <strong data-edit="buchen.landkreis_titel">Landkreis Göttingen</strong>
+      <span data-edit="buchen.landkreis_text">Buchungsportal der Region</span>
+    </a>
+    <button type="button" class="buchen-option js-direkt-oeffnen">
+      <strong data-edit="buchen.direkt_titel">Direktbuchung</strong>
+      <span data-edit="kontakt.email">fewoamgruenenband@t-online.de</span>
+    </button>
+  </div>
+</dialog>
+
+<!-- ========================================================================
+     DIREKTBUCHUNG – Hinweisfenster mit der E-Mail-Adresse
+     ======================================================================== -->
+<dialog class="buchen-dialog" id="direkt-dialog" aria-labelledby="direkt-dialog-titel">
+  <div class="buchen-dialog-kopf">
+    <h3 id="direkt-dialog-titel" data-edit="buchen.direkt_titel">Direktbuchung</h3>
+    <button type="button" class="buchen-schliessen" data-buchen-schliessen aria-label="Fenster schließen">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+  <p>Schreiben Sie uns einfach eine E-Mail an <a href="mailto:fewoamgruenenband@t-online.de" data-mailto="kontakt.email" data-edit="kontakt.email">fewoamgruenenband@t-online.de</a>.</p>
+</dialog>
+
+<!-- ========================================================================
+     FOTO-VERGRÖSSERUNG – zeigt ein angeklicktes Foto in groß
+     ======================================================================== -->
+<dialog class="bild-dialog" id="bild-dialog" aria-label="Foto vergrößert">
+  <button type="button" class="bild-schliessen" data-buchen-schliessen aria-label="Fenster schließen">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <img id="bild-dialog-img" src="" alt="">
+</dialog>
+
+<!-- ========================================================================
+     10) FOOTER – Kontakt + Rechtsvorlagen
+     ======================================================================== -->
+<footer class="fuss" id="kontakt">
+  <div class="container">
+
+    <div class="fuss-grid">
+      <div>
+        <div class="fuss-logo">
+          <svg width="26" height="26" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+            <path d="M3 20C7 12 11 24 15 16C18 10 21 20 25 8" stroke="#faf7ef" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="15" cy="16" r="2.2" fill="#c97d43"/>
+          </svg>
+          <span data-edit="brand.name">Am Grünen Band</span>
+        </div>
+        <p style="font-size:0.92rem; color:rgba(250,247,239,0.7); max-width: 40ch;" data-edit="footer.beschreibung">Private Ferienwohnung in ruhiger Naturlage – ideal zum Wandern und Radfahren.</p>
+      </div>
+
+      <div class="fuss-kontakt">
+        <p><strong style="color:#fff;">Kontakt</strong></p>
+        <p data-edit="kontakt.name">Dr. Brigitte Rempp</p>
+        <p data-edit="kontakt.strasse">Im Tiefen Weg 1</p>
+        <p data-edit="kontakt.plz_ort">37130 Gleichen</p>
+        <p>E-Mail: <a href="mailto:fewoamgruenenband@t-online.de" data-mailto="kontakt.email" data-edit="kontakt.email">fewoamgruenenband@t-online.de</a></p>
+      </div>
+
+      <!-- Rechtliches: gut sichtbare Links, damit Impressum/Datenschutz von
+           jeder Stelle der Seite in max. 2 Klicks erreichbar sind (Pflicht
+           in Deutschland). Klick auf einen Link öffnet unten den passenden
+           aufklappbaren Bereich automatisch (siehe Script am Seitenende). -->
+      <div class="fuss-rechtliches">
+        <p><strong style="color:#fff;">Rechtliches</strong></p>
+        <ul>
+          <li><a href="#impressum" class="js-rechtslink" data-rechts-ziel="impressum">Impressum</a></li>
+          <li><a href="#datenschutz" class="js-rechtslink" data-rechts-ziel="datenschutz">Datenschutz</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Rechtsvorlagen: aufklappbar. Die Angaben (Name, Adresse, Hoster ...)
+         werden im Adminpanel gepflegt. Wer eigene Texte aus einem Generator
+         (z. B. e-recht24.de oder datenschutz-generator.de) verwenden will,
+         trägt sie im Adminpanel als "Eigener Text" ein – dieser ersetzt dann
+         den Standardtext. Die Standardtexte sind nur ein GERÜST, keine
+         Rechtsberatung. -->
+    <div style="padding-top: 1.5rem;">
+
+      <details class="rechtsblock" id="impressum">
+        <summary>Impressum</summary>
+        <div class="rechts-inhalt" data-rechtstext="impressum">
+          <p><strong>Angaben gemäß § 5 Digitale-Dienste-Gesetz (DDG)</strong></p>
+          <p>
+            <span data-edit="kontakt.name">Dr. Brigitte Rempp</span><br>
+            <span data-edit="kontakt.strasse">Im Tiefen Weg 1</span><br>
+            <span data-edit="kontakt.plz_ort">37130 Gleichen</span>
+          </p>
+          <p><strong>Kontakt</strong><br>
+            E-Mail: <span data-edit="kontakt.email">fewoamgruenenband@t-online.de</span>
+          </p>
+          <p data-hide-empty="impressum.ust"><strong>Umsatzsteuer-ID</strong><br>
+            <span data-edit="impressum.ust"></span>
+          </p>
+          <p data-hide-empty="impressum.streit_eu"><strong>EU-Streitschlichtung</strong><br>
+            <span data-edit="impressum.streit_eu">Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: https://ec.europa.eu/consumers/odr/. Unsere E-Mail-Adresse finden Sie oben unter „Kontakt“.</span>
+          </p>
+          <p data-hide-empty="impressum.streit_vsbg"><strong>Verbraucherstreitbeilegung</strong><br>
+            <span data-edit="impressum.streit_vsbg">Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</span>
+          </p>
+        </div>
+      </details>
+
+      <details class="rechtsblock" id="datenschutz">
+        <summary>Datenschutz</summary>
+        <div class="rechts-inhalt" data-rechtstext="datenschutz">
+          <p><strong>Datenschutzerklärung</strong></p>
+          <p>
+            Diese Website dient ausschließlich der Präsentation der Ferienwohnung. Es werden über diese Seite <strong>keine eigenen Formulare oder Buchungen</strong> abgewickelt – die Buchung erfolgt über externe Plattformen wie Airbnb oder Booking.com beziehungsweise per direkter E-Mail-Anfrage. Es gelten die jeweiligen Datenschutzbestimmungen des gewählten Anbieters.
+          </p>
+          <p>
+            <strong>Hosting &amp; Server-Logfiles:</strong> <span data-edit="datenschutz.hoster">Netlify, Inc., San Francisco (USA)</span>, sofern die Seite online bereitgestellt wird. Beim Aufruf der Seite werden durch den Hosting-Anbieter automatisch technische Zugriffsdaten (z. B. IP-Adresse, Datum/Uhrzeit, aufgerufene Seite) in sogenannten Server-Logfiles gespeichert. Rechtsgrundlage hierfür ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der technisch fehlerfreien Bereitstellung und Sicherheit der Website). Die Logfiles werden nach <span data-edit="datenschutz.logdauer">wenigen Tagen</span> automatisch gelöscht. Da der Hoster seinen Sitz in den USA hat, kann es dabei zu einer Datenübermittlung in ein Drittland kommen; nach eigenen Angaben des Anbieters gelten hierfür geeignete Garantien (u. a. EU-Standardvertragsklauseln).
+          </p>
+          <p>
+            <strong>Schriftarten:</strong> Diese Seite bindet alle Schriftarten lokal ein (siehe Ordner „fonts/"). Es besteht keine Verbindung zu Servern von Google Fonts oder anderen externen Schriftanbietern.
+          </p>
+          <p>
+            <strong>Externe Links:</strong> Buttons auf dieser Seite verlinken zu externen Buchungsplattformen wie Airbnb, Booking.com oder der Buchungsseite des Landkreises Göttingen. Nach dem Klick gilt jeweils die Datenschutzerklärung des betreffenden Anbieters.
+          </p>
+          <p>
+            <strong>Ihre Rechte als betroffene Person</strong><br>
+            Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit sowie Widerspruch gegen die Verarbeitung Ihrer personenbezogenen Daten. Zudem haben Sie das Recht, sich bei einer Datenschutz-Aufsichtsbehörde zu beschweren.
+          </p>
+          <p>
+            <strong>Verantwortliche Stelle</strong><br>
+            <span data-edit="kontakt.name">Dr. Brigitte Rempp</span>, <span data-edit="kontakt.strasse">Im Tiefen Weg 1</span>, <span data-edit="kontakt.plz_ort">37130 Gleichen</span>
+          </p>
+        </div>
+      </details>
+
+    </div>
+
+    <div class="fuss-unten">
+      <span data-edit="footer.copyright">© 2026 Ferienwohnung am Grünen Band</span>
+      <span data-edit="footer.hinweis">Buchbar über Airbnb, Booking.com und mehr</span>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  // ============================================================
+  // ZENTRALE STELLE FÜR DIE BUCHUNGS-LINKS
+  // Werden im Adminpanel gepflegt (Airbnb unter "Allgemein",
+  // Booking.com und Landkreis Göttingen unter "Buchungsoptionen")
+  // und beim Speichern hier automatisch eingesetzt.
+  // ============================================================
+  const AIRBNB_LINK = "https://www.airbnb.de/rooms/45636309";
+  const BOOKING_LINK = "[Link zu Booking.com einfügen]";
+  const LANDKREIS_LINK = "[Link zur Buchungsseite des Landkreises Göttingen einfügen]";
+
+  document.querySelectorAll('.js-airbnb-link').forEach(function (element) {
+    element.href = AIRBNB_LINK;
+  });
+  document.querySelectorAll('.js-booking-link').forEach(function (element) {
+    element.href = BOOKING_LINK;
+  });
+  document.querySelectorAll('.js-landkreis-link').forEach(function (element) {
+    element.href = LANDKREIS_LINK;
+  });
+
+  // ============================================================
+  // BUCHUNGSAUSWAHL
+  // Die "Buchen"-Buttons öffnen ein Fenster mit allen Buchungswegen,
+  // statt direkt zu einer einzelnen Plattform zu springen.
+  // ============================================================
+  const buchenDialog = document.getElementById('buchen-dialog');
+  const direktDialog = document.getElementById('direkt-dialog');
+
+  document.querySelectorAll('.js-buchen-oeffnen').forEach(function (button) {
+    button.addEventListener('click', function () {
+      if (buchenDialog) buchenDialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('.js-direkt-oeffnen').forEach(function (button) {
+    button.addEventListener('click', function () {
+      if (buchenDialog) buchenDialog.close();
+      if (direktDialog) direktDialog.showModal();
+    });
+  });
+
+  document.querySelectorAll('dialog').forEach(function (dialog) {
+    dialog.querySelectorAll('[data-buchen-schliessen]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        dialog.close();
+      });
+    });
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+  });
+
+  // ============================================================
+  // FOTO-VERGRÖSSERUNG
+  // Klick auf ein Foto (außer dem Titelbild) zeigt es groß an.
+  // ============================================================
+  var bildDialog = document.getElementById('bild-dialog');
+  var bildDialogImg = document.getElementById('bild-dialog-img');
+  if (bildDialog && bildDialogImg) {
+    document.querySelectorAll('.galerie-bild .foto-bild').forEach(function (img) {
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', 'Foto vergrößern: ' + img.alt);
+      function openImage() {
+        bildDialogImg.src = img.src;
+        bildDialogImg.alt = img.alt;
+        bildDialog.showModal();
+      }
+      img.addEventListener('click', openImage);
+      img.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openImage();
+        }
+      });
+    });
+  }
+
+  // ============================================================
+  // RECHTSBEREICHE AUTOMATISCH ÖFFNEN (Impressum, Datenschutz)
+  // Die Links funktionieren auch OHNE JavaScript, da es normale
+  // <a href="#impressum">-Sprungmarken sind (der Browser springt dann
+  // einfach zum geschlossenen <details>-Bereich). Mit JavaScript wird
+  // der Bereich zusätzlich automatisch aufgeklappt – sowohl bei Klick
+  // auf einen Footer-Link als auch beim direkten Aufruf mit
+  // z. B. "...index.html#datenschutz" in der Adresszeile.
+  // ============================================================
+  function rechtsbereichOeffnen(ankerId) {
+    var bereich = document.getElementById(ankerId);
+    if (bereich && bereich.tagName === 'DETAILS') {
+      bereich.open = true;
+    }
+  }
+
+  document.querySelectorAll('.js-rechtslink').forEach(function (link) {
+    link.addEventListener('click', function () {
+      rechtsbereichOeffnen(link.dataset.rechtsZiel);
+    });
+  });
+
+  // Beim Laden der Seite direkt öffnen, falls schon ein #anker in der URL steht
+  if (window.location.hash) {
+    rechtsbereichOeffnen(window.location.hash.substring(1));
+  }
+</script>
+
+</body>
+</html>

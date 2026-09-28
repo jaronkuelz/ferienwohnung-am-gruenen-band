@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Website bearbeiten</title>
+<style>
+  :root {
+    --wald-dunkel: #142b20; --wald: #1e3d2c; --wald-hell: #375f45; --wald-blass: #e7efe7;
+    --papier: #faf7ef; --papier-dunkel: #f1eadb; --lehm: #b3652f; --lehm-hell: #c97d43;
+    --text: #1b241c; --text-mild: #4d5b4f; --linie: rgba(20,43,32,0.16);
+    --rot: #b3261e; --gruen: #2e7d4f;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  /* Größere Grundschrift als üblich – bewusst so gewählt, damit die
+     Bedienung auch ohne perfekte Sehschärfe entspannt bleibt. */
+  body { margin: 0; font: 18px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--papier); color: var(--text); }
+  h1, h2, h3 { line-height: 1.25; margin: 0; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  a { color: var(--wald-hell); }
+
+  .center { min-height: 100vh; display: grid; place-items: center; padding: 1.5rem; }
+  .card { background: #fff; border: 1px solid var(--linie); border-radius: 16px; padding: 2.2rem; width: 100%; max-width: 460px; box-shadow: 0 30px 60px -40px rgba(20,43,32,0.4); }
+  .card h1 { font-size: 1.6rem; color: var(--wald-dunkel); margin-bottom: 0.5rem; }
+  .card p.lead { color: var(--text-mild); margin: 0 0 1.6rem; }
+
+  .field { margin-bottom: 1.5rem; }
+  .field-kopf { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+  label { font-weight: 700; font-size: 1rem; color: var(--wald-dunkel); }
+  .help { color: var(--text-mild); font-size: 0.92rem; margin-top: 0.35rem; }
+  input[type=text], input[type=password], input[type=email], textarea, select {
+    width: 100%; padding: 0.85rem 1rem; background: #fff; border: 2px solid var(--linie); border-radius: 10px; font-size: 1rem;
+  }
+  textarea { resize: vertical; min-height: 6rem; }
+  textarea.legal { min-height: 18rem; font-family: ui-monospace, Consolas, monospace; font-size: 0.95rem; }
+  input:focus, textarea:focus, select:focus, button:focus-visible { outline: 3px solid rgba(179,101,47,0.4); border-color: var(--lehm); }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.85rem 1.4rem; border-radius: 999px; border: 2px solid transparent; font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; min-height: 3rem; }
+  .btn-haupt { background: var(--lehm); color: #fff; }
+  .btn-haupt:hover:not(:disabled) { background: #9c5626; }
+  .btn-zweit { background: #fff; border-color: var(--linie); color: var(--wald-dunkel); }
+  .btn-zweit:hover:not(:disabled) { background: var(--wald-blass); }
+  .btn-klein { padding: 0.55rem 1rem; font-size: 0.92rem; min-height: 2.4rem; }
+  .btn:disabled { opacity: 0.55; cursor: default; }
+  .btn-voll { width: 100%; }
+
+  .meldung { padding: 0.9rem 1.1rem; border-radius: 10px; margin: 0 0 1.2rem; font-size: 1rem; }
+  .meldung.fehler { background: #fbe9e7; color: var(--rot); border: 1px solid #f3c6c1; }
+  .meldung.ok { background: #e6f3ea; color: var(--gruen); border: 1px solid #bfe0cb; }
+
+  .topbar { position: sticky; top: 0; z-index: 30; background: var(--wald-dunkel); color: #fff; display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.4rem; flex-wrap: wrap; }
+  .topbar .titel { font-weight: 700; font-size: 1.15rem; margin-right: auto; }
+  .topbar .status { font-size: 0.95rem; color: rgba(250,247,239,0.75); }
+  .topbar .status.offen { color: #ffd9b8; font-weight: 700; }
+  .topbar a.btn, .topbar .btn-zweit { background: transparent; border-color: rgba(250,247,239,0.4); color: #fff; }
+  .topbar .btn-zweit:hover:not(:disabled) { background: rgba(250,247,239,0.14); }
+
+  .layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 1.6rem; max-width: 1220px; margin: 0 auto; padding: 1.6rem 1.2rem 6rem; }
+  .side { position: sticky; top: 5rem; align-self: start; display: grid; gap: 0.3rem; }
+  .side button { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; text-align: left; background: none; border: 0; padding: 0.75rem 0.9rem; border-radius: 10px; cursor: pointer; color: var(--wald-dunkel); font-weight: 600; font-size: 1rem; }
+  .side button:hover { background: var(--wald-blass); }
+  .side button.aktiv { background: var(--wald); color: #fff; }
+
+  .panel { background: #fff; border: 1px solid var(--linie); border-radius: 16px; padding: 2rem; }
+  .panel > h2 { font-size: 1.5rem; color: var(--wald-dunkel); margin-bottom: 0.4rem; }
+  .panel > p.intro { color: var(--text-mild); margin: 0 0 1.8rem; }
+
+  .foto { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 1.2rem; align-items: start; }
+  .foto-vorschau { aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden; background: repeating-linear-gradient(135deg, #dfd9c8 0, #dfd9c8 2px, #eae4d4 2px, #eae4d4 22px); display: grid; place-items: center; color: var(--text-mild); font-size: 0.9rem; text-align: center; padding: 0.6rem; }
+  .foto-vorschau img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .foto-vorschau-klein { aspect-ratio: 1; }
+  .foto-knoepfe { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+  .foto-status { font-size: 0.92rem; color: var(--text-mild); margin-bottom: 0.7rem; min-height: 1.3em; }
+  .foto-status.fehler { color: var(--rot); }
+
+  .liste { display: grid; gap: 0.6rem; margin: 0.9rem 0 0; padding: 0; list-style: none; }
+  .liste li { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.7rem 0.9rem; border: 1px solid var(--linie); border-radius: 10px; }
+  .abschnitt-trenner { border: 0; border-top: 1px solid var(--linie); margin: 2rem 0; }
+
+  /* Listen mit Hinzufügen/Entfernen (Fotos, Stichpunkte, Ausstattung, Preiszeilen) */
+  .liste-bearbeiten { display: grid; gap: 0.7rem; margin-bottom: 0.8rem; }
+  .liste-zeile { display: flex; gap: 0.7rem; align-items: center; }
+  .liste-zeile input { flex: 1 1 auto; }
+  .liste-zeile-doppelt input { flex: 1 1 50%; }
+
+  .ausstattung-zeile { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; padding: 0.9rem; border: 1px solid var(--linie); border-radius: 10px; }
+  .ausstattung-zeile select { flex: 0 0 180px; }
+  .ausstattung-zeile input:nth-of-type(1) { flex: 1 1 160px; }
+  .ausstattung-zeile input:nth-of-type(2) { flex: 2 1 240px; }
+  .icon-vorschau { width: 44px; height: 44px; border-radius: 50%; background: var(--wald-blass); color: var(--wald); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+  .galerie-bearbeiten { display: grid; gap: 1rem; margin-bottom: 0.8rem; }
+  .galerie-karte { display: grid; grid-template-columns: 140px minmax(0,1fr); gap: 1rem; padding: 1rem; border: 1px solid var(--linie); border-radius: 12px; }
+  .galerie-karte-felder { display: grid; gap: 0.6rem; align-content: start; }
+  .galerie-karte-felder input { width: 100%; }
+  .checkbox-zeile { display: flex; align-items: center; gap: 0.5rem; font-weight: 700; cursor: pointer; }
+  .checkbox-zeile input { width: auto; }
+
+  /* Kalender-Editor (Verfügbarkeit) */
+  .kalender-auswahl { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .kalender-auswahl label { font-size: 0.92rem; }
+  .kalender-auswahl select { width: auto; }
+  .kalender-tage-kopf, .admin-kalender { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .kalender-tage-kopf span { text-align: center; font-size: 0.8rem; color: var(--text-mild); font-weight: 700; padding-bottom: 0.3rem; }
+  .admin-kalender { margin-top: 0.4rem; margin-bottom: 0.4rem; }
+  .admin-kalender span.leer { background: transparent; }
+  .tag-knopf {
+    aspect-ratio: 1; border: 2px solid var(--linie); border-radius: 8px; background: #fff;
+    color: var(--wald-dunkel); font-size: 0.95rem; cursor: pointer; padding: 0;
+  }
+  .tag-knopf:hover { border-color: var(--lehm); }
+  .tag-knopf.belegt { background: var(--wald); border-color: var(--wald); color: #fff; font-weight: 700; }
+
+  .toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--wald-dunkel); color: #fff; padding: 0.8rem 1.4rem; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); z-index: 50; font-weight: 700; }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; padding-top: 1rem; }
+    .side { position: static; display: flex; overflow-x: auto; padding-bottom: 0.5rem; }
+    .side button { white-space: nowrap; }
+    .foto, .galerie-karte { grid-template-columns: 1fr; }
+    .panel { padding: 1.3rem; }
+    body { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<noscript><div class="center"><div class="card"><h1>JavaScript nötig</h1><p class="lead">Das Adminpanel braucht JavaScript. Bitte im Browser aktivieren.</p></div></div></noscript>
+<div id="app"></div>
+<script src="../js/icons.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
