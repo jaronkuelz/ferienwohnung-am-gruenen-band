@@ -8,17 +8,21 @@ function connectBlobs(event) {
   connectLambda(event);
 }
 
+// "strong" statt des Standards "eventual": ein gespeicherter Wert muss sofort
+// beim nächsten Laden sichtbar sein (wichtig fürs Adminpanel – sonst wirkt
+// das Speichern manchmal wirkungslos, weil kurz danach noch der alte Stand
+// ausgeliefert wird).
 function configStore() {
-  return getStore('fw-config');
+  return getStore({ name: 'fw-config', consistency: 'strong' });
 }
 function contentStore() {
-  return getStore('fw-content');
+  return getStore({ name: 'fw-content', consistency: 'strong' });
 }
 function backupsStore() {
-  return getStore('fw-backups');
+  return getStore({ name: 'fw-backups', consistency: 'strong' });
 }
 function photosStore() {
-  return getStore('fw-photos');
+  return getStore({ name: 'fw-photos', consistency: 'strong' });
 }
 
 module.exports = { connectBlobs, configStore, contentStore, backupsStore, photosStore };

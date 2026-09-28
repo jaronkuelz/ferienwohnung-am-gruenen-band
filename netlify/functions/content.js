@@ -13,7 +13,7 @@ exports.handler = async function (event) {
     const store = contentStore();
     const saved = await store.get('site', { type: 'json' });
     const content = saved || defaultContent();
-    return ok({ content }, { headers: { 'Cache-Control': 'public, max-age=30' } });
+    return ok({ content });
   } catch (err) {
     return fail(500, 'Inhalt konnte nicht geladen werden: ' + err.message);
   }
