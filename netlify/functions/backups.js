@@ -1,10 +1,11 @@
 // Frühere Versionen auflisten und eine davon in den Editor zurückholen
 // (veröffentlicht wird sie erst, wenn man danach auf "Speichern" klickt).
-const { backupsStore } = require('./_lib/store');
+const { backupsStore, connectBlobs } = require('./_lib/store');
 const { isAuthorized } = require('./_lib/session');
 const { ok, fail } = require('./_lib/respond');
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   const authed = await isAuthorized(event, event.httpMethod !== 'GET');
   if (!authed) return fail(401, 'Die Sitzung ist abgelaufen. Bitte neu anmelden.');
 

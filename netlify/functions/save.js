@@ -1,6 +1,6 @@
 // Speichert den kompletten Seiteninhalt (nach Anmeldung). Legt vorher eine
 // Sicherung der bisherigen Version an.
-const { contentStore, backupsStore } = require('./_lib/store');
+const { contentStore, backupsStore, connectBlobs } = require('./_lib/store');
 const { isAuthorized } = require('./_lib/session');
 const { ok, fail } = require('./_lib/respond');
 
@@ -40,6 +40,7 @@ function validate(content) {
 }
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   if (event.httpMethod !== 'POST') return fail(405, 'Nur POST erlaubt.');
 
   const authed = await isAuthorized(event, true);

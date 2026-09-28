@@ -2,7 +2,7 @@
 // und legt es in Netlify Blobs ab. Gibt einen Schlüssel zurück, der dann in
 // den Seiteninhalt eingetragen wird (z. B. content.hero.foto = { key }).
 const crypto = require('crypto');
-const { photosStore } = require('./_lib/store');
+const { photosStore, connectBlobs } = require('./_lib/store');
 const { isAuthorized } = require('./_lib/session');
 const { ok, fail } = require('./_lib/respond');
 
@@ -10,6 +10,7 @@ const MAX_BYTES = 8 * 1024 * 1024;
 const ALLOWED = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   if (event.httpMethod !== 'POST') return fail(405, 'Nur POST erlaubt.');
   const authed = await isAuthorized(event, true);
   if (!authed) return fail(401, 'Die Sitzung ist abgelaufen. Bitte neu anmelden.');

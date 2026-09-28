@@ -1,6 +1,6 @@
 // Anmeldung, Ersteinrichtung, Abmelden, Passwort ändern.
 // Aufruf über ?action=status|setup|login|logout|password
-const { configStore } = require('./_lib/store');
+const { configStore, connectBlobs } = require('./_lib/store');
 const { hashPassword, verifyPassword, passwordProblem } = require('./_lib/password');
 const { createSessionCookie, clearCookies, isAuthorized } = require('./_lib/session');
 const { lockoutRemaining, registerFailure, clearFailures } = require('./_lib/attempts');
@@ -15,6 +15,7 @@ function parseBody(event) {
 }
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   const action = (event.queryStringParameters || {}).action;
   const store = configStore();
 

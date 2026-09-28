@@ -1,10 +1,11 @@
 // Öffentliche Function: liefert den aktuellen Seiteninhalt als JSON.
 // Wird sowohl von der Website (site.js) als auch vom Adminpanel benutzt.
-const { contentStore } = require('./_lib/store');
+const { contentStore, connectBlobs } = require('./_lib/store');
 const { defaultContent } = require('./_lib/defaults');
 const { ok, fail } = require('./_lib/respond');
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   if (event.httpMethod !== 'GET') {
     return fail(405, 'Nur GET erlaubt.');
   }

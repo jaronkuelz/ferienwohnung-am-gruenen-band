@@ -1,12 +1,13 @@
 // Liefert ein gespeichertes Foto aus (öffentlich, kein Login nötig – Fotos
 // sind ja auch auf der fertigen Website für alle sichtbar).
-const { photosStore } = require('./_lib/store');
+const { photosStore, connectBlobs } = require('./_lib/store');
 const { fail } = require('./_lib/respond');
 
 const KEY_RE = /^foto-[a-f0-9]{16}\.(jpg|png|webp)$/;
 const CONTENT_TYPES = { jpg: 'image/jpeg', png: 'image/png', webp: 'image/webp' };
 
 exports.handler = async function (event) {
+  connectBlobs(event);
   const key = (event.queryStringParameters || {}).key || '';
   if (!KEY_RE.test(key)) return fail(400, 'Ungültiger Bildname.');
 
