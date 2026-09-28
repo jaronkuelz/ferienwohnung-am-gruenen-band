@@ -172,12 +172,14 @@
     }
   }
 
+  // Beim Ausschalten verschwindet nur der Kalender selbst – Überschrift,
+  // Hinweistext und der Airbnb-Button bleiben stehen, damit Gäste die
+  // Verfügbarkeit weiterhin dort prüfen können.
   function applyVerfuegbarkeitToggle(aktiv) {
-    var section = document.getElementById('verfuegbarkeit');
-    var navItem = document.getElementById('nav-verfuegbarkeit');
-    var display = aktiv ? '' : 'none';
-    if (section) section.style.display = display;
-    if (navItem) navItem.style.display = display;
+    var kalenderKarte = document.getElementById('kalender-karte');
+    var grid = document.getElementById('verfuegbarkeit-grid');
+    if (kalenderKarte) kalenderKarte.style.display = aktiv ? '' : 'none';
+    if (grid) grid.classList.toggle('ohne-kalender', !aktiv);
   }
 
   function renderZeilen(container, zeilen) {

@@ -118,7 +118,7 @@
         f('preise.btn', 'Button unter den Preisen', 'text', 60),
       ]},
       { id: 'verfuegbarkeit', title: 'Verfügbarkeit', intro: 'Der Kalender wird von Hand gepflegt. Er lässt sich komplett aus- und wieder einblenden.', fields: [
-        f('verfuegbarkeit.aktiv', 'Kalender auf der Website anzeigen', 'checkbox', null, 'Wenn ausgeschaltet, verschwindet der ganze Abschnitt „Verfügbarkeit“ inklusive Menüpunkt von der Website.'),
+        f('verfuegbarkeit.aktiv', 'Kalender auf der Website anzeigen', 'checkbox', null, 'Wenn ausgeschaltet, verschwindet nur der Kalender selbst. Überschrift, Hinweistext und der Button „Auf Airbnb prüfen“ bleiben sichtbar.'),
         f('verfuegbarkeit.kicker', 'Kleine Überschrift', 'text', 60),
         f('verfuegbarkeit.titel', 'Überschrift', 'text', 100),
         f('verfuegbarkeit.intro', 'Einleitung', 'textarea', 300),

@@ -253,6 +253,7 @@
 
   .verfuegbarkeit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
   @media (max-width: 860px) { .verfuegbarkeit-grid { grid-template-columns: 1fr; } }
+  .verfuegbarkeit-grid.ohne-kalender { grid-template-columns: 1fr; max-width: 560px; }
   .kalender-karte { background: #fff; border: 1px solid var(--linie); border-radius: 16px; padding: 1.8rem; }
   .kalender-titel { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; }
   .kalender-titel strong { font-family: 'Bricolage Grotesque', sans-serif; color: var(--wald-dunkel); }
@@ -441,9 +442,9 @@
         <p data-k="verfuegbarkeit.intro"></p>
       </div>
 
-      <div class="verfuegbarkeit-grid">
+      <div class="verfuegbarkeit-grid" id="verfuegbarkeit-grid">
 
-        <div class="kalender-karte">
+        <div class="kalender-karte" id="kalender-karte">
           <div class="kalender-titel"><strong data-k="verfuegbarkeit.kalenderTitel">August 2026 (Beispiel)</strong></div>
           <div class="kalender-tage-kopf">
             <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
