@@ -42,6 +42,23 @@
       var value = getPath(content, el.getAttribute('data-k'));
       el.textContent = value == null ? '' : value;
     });
+    setHeroTitel(getPath(content, 'hero.titel'));
+  }
+
+  // Die Hero-Überschrift wird am ersten Gedankenstrich umgebrochen:
+  // „Ferienwohnung am Grünen Band – Zeit für Ruhe und Natur“ wird zu einer
+  // großen ersten Zeile und einer etwas kleineren zweiten Zeile.
+  function setHeroTitel(value) {
+    var el = document.querySelector('[data-k="hero.titel"]');
+    if (!el || value == null) return;
+    var teile = String(value).split(/\s+[–—-]\s+/);
+    if (teile.length < 2) return;
+    el.textContent = teile.shift();
+    el.appendChild(document.createElement('br'));
+    var zeile = document.createElement('span');
+    zeile.className = 'hero-unterzeile';
+    zeile.textContent = teile.join(' – ');
+    el.appendChild(zeile);
   }
 
   // Ein Foto-Objekt zeigt entweder auf ein hochgeladenes Foto (key, über
