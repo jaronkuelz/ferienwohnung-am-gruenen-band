@@ -52,8 +52,15 @@
     var el = document.querySelector('[data-k="hero.titel"]');
     if (!el || value == null) return;
     var teile = String(value).split(/\s+[–—-]\s+/);
-    if (teile.length < 2) return;
-    el.textContent = teile.shift();
+    // Die große Zeile wird zusätzlich nach dem ersten Wort umgebrochen:
+    // „Ferienwohnung“ / „am Grünen Band“.
+    var gross = teile.shift().trim().split(/\s+/);
+    el.textContent = gross.shift();
+    if (gross.length) {
+      el.appendChild(document.createElement('br'));
+      el.appendChild(document.createTextNode(gross.join(' ')));
+    }
+    if (!teile.length) return;
     el.appendChild(document.createElement('br'));
     var zeile = document.createElement('span');
     zeile.className = 'hero-unterzeile';
