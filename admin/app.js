@@ -90,7 +90,7 @@
         f('hero.btnWohnung', 'Button 2 (springt zur Wohnung)', 'text', 40),
         f('hero.fakten', 'Kurzinfos (z. B. Schlafplätze)', 'list-text', 60),
       ]},
-      { id: 'wohnung', title: 'Die Wohnung / Fotogalerie', intro: 'Überschrift und Fotogalerie. Fotos können hinzugefügt, entfernt und mit „hochkant“ als stehendes Format markiert werden.', fields: [
+      { id: 'wohnung', title: 'Die Wohnung / Fotogalerie', intro: 'Überschrift und Fotogalerie. Fotos können hinzugefügt, entfernt, mit „Nach vorne“/„Nach hinten“ umsortiert und mit „hochkant“ als stehendes Format markiert werden. Foto 1 erscheint auf der Website zuerst.', fields: [
         f('wohnung.kicker', 'Kleine Überschrift', 'text', 60),
         f('wohnung.titel', 'Überschrift', 'text', 150),
         f('wohnung.text', 'Text', 'textarea', 500),
@@ -514,8 +514,22 @@
             if (!confirm('Dieses Galeriefoto wirklich entfernen?')) return;
             list.splice(idx, 1); redraw(); refresh();
           } });
+          // Reihenfolge: Foto mit dem Nachbarn tauschen. Bewusst Knöpfe statt
+          // Ziehen mit der Maus – einfacher zu bedienen und klappt auch am Handy.
+          function move(dir) {
+            var ziel = idx + dir;
+            var tmp = list[ziel]; list[ziel] = list[idx]; list[idx] = tmp;
+            redraw(); refresh();
+            var karte = itemsBox.children[ziel];
+            if (karte) karte.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }
+          var hoch = h('button', { type: 'button', class: 'btn btn-zweit btn-klein', text: '↑ Nach vorne', disabled: idx === 0, 'aria-label': 'Foto ' + (idx + 1) + ' eine Position nach vorne', onclick: function () { move(-1); } });
+          var runter = h('button', { type: 'button', class: 'btn btn-zweit btn-klein', text: '↓ Nach hinten', disabled: idx === list.length - 1, 'aria-label': 'Foto ' + (idx + 1) + ' eine Position nach hinten', onclick: function () { move(1); } });
           itemsBox.appendChild(h('div', { class: 'galerie-karte' },
-            preview,
+            h('div', { class: 'galerie-karte-links' },
+              h('div', { class: 'galerie-nummer', text: 'Foto ' + (idx + 1) + ' von ' + list.length }),
+              preview,
+              h('div', { class: 'galerie-reihenfolge' }, hoch, runter)),
             h('div', { class: 'galerie-karte-felder' }, pick, fileInput, info, altInput, captionInput, hochkantLabel, del)));
         });
       }
