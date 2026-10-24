@@ -162,7 +162,6 @@
   .foto-bild { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .hero-foto-platzhalter.hat-foto { background: none; }
   .hero-foto-platzhalter.hat-foto::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,43,32,0.35) 0%, rgba(20,43,32,0.55) 55%, rgba(20,43,32,0.9) 100%); }
-  .hat-foto .hero-foto-hinweis, .hat-foto .lage-foto-hinweis { display: none; }
   .galerie-bild.hat-foto, .lage-foto-platzhalter.hat-foto { background: none; }
 
   .hero-foto-platzhalter {
@@ -170,7 +169,6 @@
     background: linear-gradient(180deg, rgba(20,43,32,0.35) 0%, rgba(20,43,32,0.55) 55%, rgba(20,43,32,0.9) 100%), repeating-linear-gradient(135deg, #33553f 0px, #33553f 2px, #2a4837 2px, #2a4837 60px);
     display: flex; align-items: center; justify-content: center;
   }
-  .hero-foto-hinweis { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; color: rgba(250,247,239,0.55); font-size: 0.85rem; letter-spacing: 0.03em; text-align: center; }
 
   .hero-inhalt { position: relative; z-index: 2; max-width: 1180px; margin: 0 auto; padding: 3rem 1.5rem 4rem; width: 100%; }
   .hero-inhalt h1 { color: #fff; font-size: clamp(2.1rem, 5vw, 3.4rem); max-width: 16ch; margin-bottom: 1rem; text-shadow: 0 2px 18px rgba(0,0,0,0.25); }
@@ -238,7 +236,6 @@
   .lage-liste { display: grid; gap: 0.9rem; margin-top: 1.8rem; }
   .lage-liste li { display: flex; gap: 0.8rem; align-items: flex-start; color: rgba(250,247,239,0.9); font-size: 0.98rem; }
   .lage-liste li svg { flex-shrink: 0; margin-top: 3px; color: var(--lehm-hell); }
-  .lage-foto-hinweis { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
   .lage-foto-platzhalter { position: relative; overflow: hidden; height: 380px; border-radius: 14px; background: repeating-linear-gradient(135deg, #24473a 0px, #24473a 2px, #1c3a2f 2px, #1c3a2f 46px); display: flex; align-items: center; justify-content: center; color: rgba(250,247,239,0.55); font-size: 0.85rem; text-align: center; flex-direction: column; gap: 0.6rem; }
 
   .preise-karte { background: #fff; border: 1px solid var(--linie); border-radius: 16px; padding: 2.6rem; max-width: 620px; box-shadow: 0 30px 60px -40px var(--schatten); }
@@ -335,14 +332,6 @@
 
   <section class="hero" id="hero">
     <div class="hero-foto-platzhalter" data-foto="hero" aria-hidden="true">
-      <div class="hero-foto-hinweis">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-          <rect x="3" y="6" width="18" height="14" rx="2"/>
-          <circle cx="12" cy="13" r="3.3"/>
-          <path d="M8 6l1.4-2h5.2L16 6"/>
-        </svg>
-        HIER GROSSES TITELFOTO EINSETZEN<br>(Außenansicht mit Landschaft)
-      </div>
     </div>
 
     <div class="hero-inhalt">
@@ -388,13 +377,6 @@
     <div class="container lage-grid">
 
       <div class="lage-foto-platzhalter" data-foto="lage">
-        <div class="lage-foto-hinweis">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
-            <path d="M3 18l5-8 4 5 3-4 6 7"/>
-            <circle cx="7" cy="7" r="2"/>
-          </svg>
-          HIER LANDSCHAFTSFOTO EINSETZEN<br>(Grünes Band / Wanderweg)
-        </div>
       </div>
 
       <div>
